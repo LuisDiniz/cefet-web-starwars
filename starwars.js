@@ -20,14 +20,15 @@ $.ajax({
 
 	for (var i = 0; i < resposta.results.length; i++) {
 		let episodeNumber = converteNumeroRomano(resposta.results[i].episode_id);
-		movies.innerHTML = movies.innerHTML + '<li data-episode-url="http://swapi.co/api/films/4/">Episode '+ episodeNumber +'</li>';
+		movies.innerHTML = movies.innerHTML + '<li id=' + resposta.results[i].episode_id + ' data-episode=resposta.results[i]>Episode '+ episodeNumber +'</li>';
 	}
 
-	
-
-  	animation.append('Episode' + converteNumeroRomano(resposta.results[0].episode_id));
+	animation.append('Episode' + converteNumeroRomano(resposta.results[0].episode_id));
   	animation.append(resposta.results[0].title);
   	animation.append(resposta.results[0].opening_crawl);
+
+  	let episode = document.querySelector('#movies>ul>#1');
+	console.log(episode.getAttribute('data-episode'));
 
   }
 });
