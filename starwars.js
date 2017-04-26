@@ -1,38 +1,30 @@
-// var getFilmes = new XMLHttpRequest();
-// getFilmes.onreadystatechange = callbackGetFilmes;
-// getFilmes.open('GET', 'http://swapi.co/api/films/', true);
-// getFilmes.send(null);
-
-// function callbackGetFilmes(){
-// 	console.log(this.response);
-// }
-
-
 $.ajax({
-  url: 'http://swapi.co/api/films/',
-  method: 'GET',
-  success: function(resposta) {
-  	//var item = window.$('.reading-animation');
-  	console.log(resposta.results);
+	url: 'http://swapi.co/api/films/',
+	method: 'GET',
+	success: function(resposta) {
+		let movies = document.querySelector('#movies>ul');
+		let animation = document.querySelector('.reading-animation');	
 
-	let movies = document.querySelector('#movies');
-	let animation = document.querySelector('.reading-animation');
+		for (var i = 0; i < resposta.results.length; i++) {
+			let episodeNumber = converteNumeroRomano(resposta.results[i].episode_id);
+			movies.innerHTML = movies.innerHTML + '<li id=episode' + resposta.results[i].episode_id + ' data-episodeIndex=' + i + '>Episode '+ episodeNumber +'</li>';
+		}
 
-	for (var i = 0; i < resposta.results.length; i++) {
-		let episodeNumber = converteNumeroRomano(resposta.results[i].episode_id);
-		movies.innerHTML = movies.innerHTML + '<li id=' + resposta.results[i].episode_id + ' data-episode=resposta.results[i]>Episode '+ episodeNumber +'</li>';
+		let episodesLinkList = document.querySelectorAll('#movies>ul>li');	
+
+		for (var i = 1; i <= episodesLinkList.length; i++) {
+			let episodesLink = document.querySelector('#episode'+i);
+			episodesLink.addEventListener('click', function(){
+					let episodeIndex = episodesLink.getAttribute('data-episodeIndex');
+					animation.innerHTML = '';
+
+					animation.append('Episode ' + converteNumeroRomano(resposta.results[episodeIndex].episode_id) + '\n');
+				  	animation.append(resposta.results[episodeIndex].title + '\n\n');	
+				  	animation.append(resposta.results[episodeIndex].opening_crawl);		
+				});
+		}
 	}
-
-	animation.append('Episode' + converteNumeroRomano(resposta.results[0].episode_id));
-  	animation.append(resposta.results[0].title);
-  	animation.append(resposta.results[0].opening_crawl);
-
-  	let episode = document.querySelector('#movies>ul>#1');
-	console.log(episode.getAttribute('data-episode'));
-
-  }
 });
-
 
 function converteNumeroRomano(numero){
 	switch(numero) {
@@ -44,13 +36,19 @@ function converteNumeroRomano(numero){
 	        break;
 	    case 3:
 	        return 'III';
+	        break;
 	    case 4:
 	        return 'IV';
+	        break;
 	    case 5:
 	        return 'V';
+	        break;
 	    case 6:
 	        return 'VI';
+	        break;
 	    case 7:
 	        return 'VII';
+	        break;
 	}
 }
+
